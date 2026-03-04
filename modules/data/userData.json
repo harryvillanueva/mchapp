@@ -1,0 +1,85 @@
+[
+      {
+            "name":"Diego CEO MCH",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Admin"
+      },
+          
+      {
+            "name":"CRM",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Admin"
+      },
+          
+      {
+            "name":"ATIC",
+            "password":"c5a66172d1bf0099f918ccdc47c05dc2ed451868",
+            "role":"Root"
+      },
+          
+      {
+            "name":"RRHH",
+            "password":"555823507908b631d11e5869aa21715238ed5425",
+            "role":"Oficina"
+      },
+          
+      {
+            "name":"RMG",
+            "password":"67ba3ce5de94f228e527000bf632f6a92e2a29bd",
+            "role":"Oficina"
+      },
+          
+      {
+            "name":"ADE",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Oficina"
+      },
+          
+      {
+            "name":"DA",
+            "password":"d0644b823dcc72b68992e0f0187a9a7f10488ad3",
+            "role":"Oficina"
+      },
+          
+      {
+            "name":"DN",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Oficina"
+      },
+          
+      {
+            "name":"Francisca",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Limpieza"
+      },
+          
+      {
+            "name":"Maria Rosa",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Limpieza"
+      },
+          
+      {
+            "name":"Svelanka",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Limpieza"
+      },
+          
+      {
+            "name":"Ivan",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Mantenimiento"
+      },
+        
+      {
+            "name":"Iliana",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Limpieza"
+      },
+          
+      {
+            "name":"Martha",
+            "password":"71a2c7a007cdc75a6160eb5d643ee637ff529734",
+            "role":"Limpieza"
+      }
+]

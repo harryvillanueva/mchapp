@@ -1,0 +1,46 @@
+<div id="formulario" style="font-family: 'Ubuntu', sans-serif; width:70%"
+    class="shadow rounded card text-center mx-auto my-5 ">
+    <img width="70%" class="mx-auto d-block" src="https://i.ibb.co/FxhfMzh/Logo-4.png" alt="MyCityHome">
+    <div class="card-body">
+        
+        <div class="mb-3">
+            
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <a href="javascript:SendCode()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M0 3.5A.5.5 0 0 1 .5 3H1c2.202 0 3.827 1.24 4.874 2.418.49.552.865 1.102 1.126 1.532.26-.43.636-.98 1.126-1.532C9.173 4.24 10.798 3 13 3v1c-1.798 0-3.173 1.01-4.126 2.082A9.624 9.624 0 0 0 7.556 8a9.624 9.624 0 0 0 1.317 1.918C9.828 10.99 11.204 12 13 12v1c-2.202 0-3.827-1.24-4.874-2.418A10.595 10.595 0 0 1 7 9.05c-.26.43-.636.98-1.126 1.532C4.827 11.76 3.202 13 1 13H.5a.5.5 0 0 1 0-1H1c1.798 0 3.173-1.01 4.126-2.082A9.624 9.624 0 0 0 6.444 8a9.624 9.624 0 0 0-1.317-1.918C4.172 5.01 2.796 4 1 4H.5a.5.5 0 0 1-.5-.5z"/>
+                                <path d="M13 5.466V1.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192zm0 9v-3.932a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384l-2.36 1.966a.25.25 0 0 1-.41-.192z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <input type="text" class="form-control" aria-label="Text input with checkbox">
+            </div>
+
+            <button id="btnNewCode" class="btn btn-primary mx-3 p-3" name="cmd" onclick="SendCode" value="newCode">
+                Enviar codigo
+            </button>
+            
+        </div>
+
+        <div id="newCode">            
+            <label id="respuesta"></label>
+        </div>
+    </form>
+    
+</div>
+<script src="https://cdn.socket.io/4.4.1/socket.io.js"></script>
+<script>
+    var socket = io('http://localhost:3000', { transports : ['websocket'] });
+
+    function SendCode(){
+        socket.emit('request',"{code:00000}")
+    }
+
+    socket.on('connect',()=>{
+        console.log('connected')
+        socket.emit('logUser',"00001")
+    })
+</script>

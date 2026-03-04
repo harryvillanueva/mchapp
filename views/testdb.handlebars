@@ -1,0 +1,137 @@
+<style>
+      button {
+        margin-top: 0%;
+      }
+
+      .mt-2 {
+            padding-bottom: 20px;
+      }
+
+      table tr td:first-child {
+            border-color: #dee2e6ba;
+            border-left-width: 1px;
+      }
+      table tr td:last-child {
+            border-color: #dee2e6ba;
+            border-right-width: 1px;
+      }
+
+      /* On screens that are 600px or less, set the background color to olive */
+      @media screen and (max-width: 600px) {
+            .header-content {
+                  display: flex;
+                  flex-direction: column;
+            }
+
+            .container {
+                  width: 85%;
+            }
+
+            .header-content div {
+                  width: 100%;
+            }
+
+            .header-content div:first-child {
+                  text-align: left !important;
+            }
+
+            .table-responsive {
+                  display: none;
+            }
+
+            #contenedor-table {
+                  display: block;
+            }
+      }
+</style>
+<div class="container">
+      <img src="https://i.ibb.co/FxhfMzh/Logo-4.png" width="50%" class="mx-auto d-block" id="icon" alt="MyCityHome" />
+      <h1 class="text-center">{{ title }}</h1>
+      <br/>
+      <hr />
+      {{!-- Tabla para moviles --}}
+      <!--<div id="contenedor-table">
+            {{#if dataDevicesIsEmpty }}
+                  <div class="row-table-div fw-bold text-danger text-center">{{ msgTableEmpty }}</div>
+            {{else}}
+                  {{#each dataDevices}}
+                        <div class="row row-table-div">
+                              <div class="col-auto col-nro-table">{{ index }}</div>
+                              <div class="col">
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Tipo</div>
+                                          <div class="text-start txt-value">{{ typeDevice }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">F. Conexión</div>
+                                          <div class="text-start txt-value">{{ dateConnection }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">F. Desconexión</div>
+                                          <div class="text-start txt-value">{{ dateDisconnected }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Nombre</div>
+                                          <div class="text-start txt-value">{{ name }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Solicitud?</div>
+                                          <div class="text-start txt-value">{{{ labelAction }}}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Estado</div>
+                                          <div class="text-start txt-value">
+                                                {{#if statusBool}}
+                                                      <span class="text-success fw-bold">{{ status }}</span>
+                                                {{else}}
+                                                      <span class="text-danger fw-bold">{{ status }}</span>
+                                                {{/if}}
+                                          </div>
+                                    </div>
+                              </div>
+                        </div>
+                  {{/each}}
+            {{/if}}
+      </div>-->
+
+      {{!-- Tabla para monitores grandes --}}
+      <div class="table-responsive">
+            <table class="table table-striped">
+                  <thead>
+                        <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Username</th>
+                              <th scope="col">Password</th>
+                              <th scope="col">Full name</th>
+                              <th scope="col">Full surname</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        {{#if dataIsEmpty }}
+                              <tr>
+                                    <td class="fw-bold text-danger" colspan="7">{{ msgTableEmpty }}</td>
+                              </tr>
+                        {{else}}
+                              {{#each lusers}}
+                              <tr>
+                                    <th scope="row">{{ idusuario }}</th>
+                                    <td>{{ username }}</td>
+                                    <td>{{ password }}</td>
+                                    <td>{{ fullname }}</td>
+                                    <td>{{ fullsurname }}</td>
+                              </tr>
+                              {{/each}}
+                        {{/if}}
+                  </tbody>
+            </table>
+      </div>
+      <div class="mt-2">
+            <button type="button" class="btn btn-secondary btn-enviar" onclick="back();">< Atrás</button>
+      </div>
+</div>
+
+<script>
+      const back = () => {
+            location.href='/'
+      }
+</script>

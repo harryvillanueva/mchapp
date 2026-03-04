@@ -1,0 +1,109 @@
+<style>
+      .show {
+            display: block;
+      }
+
+      .hide {
+            display: none;
+      }
+      .container {
+            margin-top: 30px;
+      }
+
+      button.btn-enviar {
+            margin-top: 0;
+            margin-left: 1%;
+      }
+</style>
+<div class="container">
+      <h1 class="text-center">Buzón de sugerencias</h1>
+      
+      <div id="alertOK" class="alert alert-success fade hide" role="alert">
+            <b>Su sugerencia ha sido registrada con éxito!.</b>
+      </div>
+      <div id="alertKO" class="alert alert-danger fade hide" role="alert">
+            <b>Error al registrar su sugerencia, por favor inténtelo de nuevo más tarde.</b>
+      </div>
+      
+      <form id="fsugerencia" method="POST" action="javascript:void(0);" class="form">
+            <div class="mb-3">
+                  <label for="motivo" class="form-label font-weight-bold">Motivo</label>
+                  <input type="text" class="form-control" id="motivo" placeholder="motivo..." />
+            </div>
+            <div class="mb-3">
+                  <label for="observacion" class="form-label font-weight-bold">Observación</label>
+                  <textarea class="form-control" id="observacion" placeholder="observación..." cols="6" rows="4"></textarea>
+            </div>
+            <div class="mb-3 text-center">
+                  <a class="btn btn-dark" href="/login">Atrás</a>
+                  <button type="button" class="btn btn-primary btn-enviar" onclick="sendSugerencia();">Enviar</button>
+            </div>
+      </form>
+</div>
+
+<!-- Modal -->
+<div class="modal" tabindex="-1" id="exampleModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+            <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+            </div>
+            &nbsp;Espere...
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+      const sendSugerencia = () => {
+            // Field 
+            const fMotivo = document.getElementById("motivo")
+            const fObservacion = document.getElementById("observacion")
+
+            // ref alerts
+            const alertOK = document.getElementById('alertOK')
+            const alertKO = document.getElementById('alertKO')
+
+            const myModal = new bootstrap.Modal(document.getElementById('exampleModal'), {})
+
+            if (fMotivo.value === '' || fObservacion.value === '') {
+                  alert('Por favor rellenar los campos');
+                  return;
+            }
+
+            myModal.show();
+
+            fetch('/savesugerencia', {
+                  method: 'POST',
+                  headers: {
+                        "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ motivo: fMotivo.value, observacion: fObservacion.value })
+            })
+            .then(res => res.json())
+            .then(res=> {
+                  // OK
+                  if ( res.state === 1 ) {
+                        // Limpiar el formulario
+                        document.getElementById("fsugerencia").reset();
+
+                        alertOK.classList.add('show');
+                        alertOK.classList.remove('hide');
+                        alertKO.classList.add('hide');
+                        alertKO.classList.remove('show');
+
+                  } else { // ERROR
+                        alertOK.classList.add('hide');
+                        alertOK.classList.remove('show');
+                        alertKO.classList.add('show');
+                        alertKO.classList.remove('hide');
+                  }
+                  myModal.hide();
+            })
+            .catch((err) => {
+                  console.log('Error: ', err);
+                  myModal.hide();
+            });
+      }
+</script>

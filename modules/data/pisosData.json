@@ -1,0 +1,122 @@
+[
+       {
+           "ID": "Oficina",
+           "Welock": 1,
+           "SONOFF": 1,
+           "Portal": 1
+     },
+      {
+           "ID": "Aravaca1",
+           "Welock": 1,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Azcas6",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Azcas7",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Azcas8",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Azcas9",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Serrano16",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Serrano1",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "CH9",
+           "Welock": 1,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Chueca10",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Chueca11",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Chueca12",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "CH13",
+           "Welock": 1,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Palma1",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Retiro7",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "CAST5",
+           "Welock": 0,
+           "SONOFF": 0,
+           "Portal": 0
+     },
+     {
+           "ID": "Prueba",
+           "Welock": 1,
+           "SONOFF": 1,
+           "Portal": 1
+     },
+     {
+           "ID": "PRUEBA100",
+           "Welock": 1,
+           "SONOFF": 0,
+           "Portal": 1
+     },
+     {
+           "ID": "Prueba9",
+           "Welock": 1,
+           "SONOFF": 0,
+           "Portal": 1
+     },
+     {
+           "ID": "Oficina",
+           "Welock": 1,
+           "SONOFF": 1,
+           "Portal": 1
+     }
+]

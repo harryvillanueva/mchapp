@@ -1,0 +1,31 @@
+{
+  "name": "appmch",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node app.js dev",
+    "start-mirilla": "node mirilla/serverMirilla.js",
+    "stop-mirilla": "pkill -f serverMirilla.js"
+  },
+  "author": "Brayner",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-session": "^2.0.0",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^16.0.3",
+    "ewelink-api": "^3.1.1",
+    "express": "^4.21.2",
+    "express-handlebars": "^6.0.5",
+    "express-session": "^1.17.3",
+    "google-spreadsheet": "^3.3.0",
+    "socket.io": "^4.5.4",
+    "socket.io-client": "^4.7.3"
+  },
+  "devDependencies": {
+    "@types/cookie-session": "^2.0.44",
+    "@types/express-session": "^1.17.7"
+  },
+  "description": ""
+}

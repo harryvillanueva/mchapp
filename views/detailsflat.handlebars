@@ -1,0 +1,251 @@
+<style>
+      .header-data {
+            background-color: #f49d4d;
+            color: white;
+            border-bottom: 1px solid;
+      }
+
+      .header-body-data-odd {
+            background-color: #fc7e0c0f;
+            border-bottom: 1px solid #fc7e0c0f;
+      }
+
+      .header-body-data-even {
+            border-bottom: 1px solid #fc7e0c0f;
+      }
+
+      .header-container {
+            border: 1px solid #f49d4d3b;
+            margin-bottom: 40px;
+      }
+
+      button {
+        margin-top: 0%;
+      }
+
+      .mt-2 {
+            padding-bottom: 20px;
+      }
+
+      table tr td:first-child {
+            border-color: #dee2e6ba;
+            border-left-width: 1px;
+      }
+      table tr td:last-child {
+            border-color: #dee2e6ba;
+            border-right-width: 1px;
+      }
+
+      /* On screens that are 600px or less, set the background color to olive */
+      @media screen and (max-width: 600px) {
+            .header-content {
+                  display: flex;
+                  flex-direction: column;
+            }
+
+            .container {
+                  width: 85%;
+            }
+
+            .header-content div {
+                  width: 100%;
+            }
+
+            .header-content div:first-child {
+                  text-align: left !important;
+            }
+
+            .table-responsive {
+                  display: none;
+            }
+
+            #contenedor-table {
+                  display: block;
+            }
+      }
+</style>
+
+<div class="container">
+      <img src="https://i.ibb.co/FxhfMzh/Logo-4.png" width="50%" class="mx-auto d-block" id="icon" alt="MyCityHome" />
+      <div class="container header-container">
+            <div class="row header-content">
+                  <div class="col-4 text-end header-data">
+                        <p><b>Piso</b>:</p>
+                  </div>
+                  <div class="col-8 text-start fw-bold header-body-data-odd">{{codeDevice}}</div>
+            </div>
+
+            <div class="row header-content">
+                  <div class="col-4 text-end header-data">
+                        <p><b>Lugar</b>:</p>
+                  </div>
+                  <div class="col-8 text-start fw-bold1 header-body-data-even">{{lugar_piso}}</div>
+            </div>
+
+            <div class="row header-content">
+                  <div class="col-4 text-end header-data">
+                        <p><b>Código Postal</b>:</p>
+                  </div>
+                  <div class="col-8 text-start fw-bold1 header-body-data-odd">{{codigo_postal}}</div>
+            </div>
+
+            <div class="row header-content">
+                  <div class="col-4 text-end header-data">
+                        <p><b>Dirección</b>:</p>
+                  </div>
+                  <div class="col-8 text-start fw-bold1 header-body-data-even">{{direccion_piso}}</div>
+            </div>
+            {{#if isWelock}}
+                  <div class="row header-content">
+                        <div class="col-4 text-end header-data">
+                              <p><b>Código [ Permanente ]</b>:</p>
+                        </div>
+                        <div class="col-8 text-start header-body-data-odd">{{codigo_permanente}} <b>[</b> <span class="text-danger fw-bold" style="font-size: 14px;">{{mCodigoPermanete}}</span> <b>]</b></div>
+                  </div>
+
+                  <div class="row header-content">
+                        <div class="col-4 text-end header-data">
+                              <p><b>Código [ Temporal ]</b>:</p>
+                        </div>
+                        <div class="col-8 text-start header-body-data-even">
+                              {{#if existCode}}
+                                    {{code}} <b>[</b>{{#if isCodeActive}}<span class="text-success fw-bold"> Vigente </span>{{else}}<span class="text-danger fw-bold"> Caducado </span>{{/if}} <b>]</b>
+                              {{else}}
+                                    <b>[</b><span class="text-danger fw-bold"> Sin código </span> <b>]</b>
+                              {{/if}}
+                        </div>
+                  </div>
+
+                  {{#if existCode}}
+                        <div class="row header-content">
+                              <div class="col-4 text-end header-data">
+                                    <p><b>Vigencia Código</b>:</p>
+                              </div>
+                              <div class="col-8 text-start header-body-data-odd">{{startTime}} a {{endTime}}</div>
+                        </div>
+                  {{/if}}
+
+                  {{#if showCardsM}}
+                        <div class="row header-content">
+                              <div class="col-4 text-end header-data">
+                              <p><b>Tarjetas maestras</b>:</p>
+                              </div>
+                              <div class="col-8 text-start {{#if existCode}}header-body-data-even{{else}}header-body-data-odd{{/if}}">
+                                    {{#if existCardsM}}
+                                          {{{cardsCurrentM}}}
+                                    {{else}}
+                                          <b>[</b><span class="text-danger fw-bold"> No hay tarjetas registradas </span><b>]</b>
+                                    {{/if}}
+                              </div>
+                        </div>
+                  {{/if}}
+                  <div class="row header-content">
+                        <div class="col-4 text-end header-data">
+                              <p><b>Tarjetas activas</b>:</p>
+                        </div>
+                        <div class="col-8 text-start {{#if showCardsM}}{{#if existCode}}header-body-data-odd{{else}}header-body-data-even{{/if}}{{else}}  {{#if existCode}}header-body-data-even{{else}}header-body-data-odd{{/if}}{{/if}}">
+                              {{#if existCards}}
+                                    {{#each lcardsData}}
+                                          <p>{{idqr}} <b>[ </b><span class="fw-bold text-success">{{ubicacion}}</span><b> ]</b></p>
+                                    {{/each}}
+                              {{else}}
+                                    <b>[</b><span class="text-danger fw-bold"> No hay tarjetas registradas </span><b>]</b>
+                              {{/if}}
+                        </div>
+                  </div>
+            {{/if}}
+      </div>
+      <h4 class="text-center text-start">{{ title }}</h4>
+      <hr />
+      {{!-- Tabla para moviles --}}
+      <div id="contenedor-table">
+            {{#if dataDevicesIsEmpty }}
+                  <div class="row-table-div fw-bold text-danger text-center">{{ msgTableEmpty }}</div>
+            {{else}}
+                  {{#each dataDevices}}
+                        <div class="row row-table-div">
+                              <div class="col-auto col-nro-table">{{ Index }}</div>
+                              <div class="col">
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Fecha</div>
+                                          <div class="text-start txt-value">{{ FechaLog }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Usuario</div>
+                                          <div class="text-start txt-value">{{ Usuario }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Acción</div>
+                                          <div class="text-start txt-value">{{ Accion }}</div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Resultado</div>
+                                          <div class="text-start txt-value">
+                                                {{#if statusResult}}
+                                                      <span class="text-success fw-bold">{{ Resultado }}</span>
+                                                {{else}}
+                                                      <span class="text-danger fw-bold">{{ Resultado }}</span>
+                                                {{/if}}
+                                          </div>
+                                    </div>
+                                    <div class="row">
+                                          <div class="text-start fw-bold">Info. adicional</div>
+                                          <div class="text-start txt-value">{{{ infoAdicional }}}</div>
+                                    </div>
+                              </div>
+                        </div>
+                  {{/each}}
+            {{/if}}
+      </div>
+
+      {{!-- Tabla para monitores grandes --}}
+      <div class="table-responsive">
+            <table class="table table-striped">
+                  <thead>
+                        <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Fecha</th>
+                              <th scope="col">Usuario</th>
+                              <th scope="col">Acción</th>
+                              <th scope="col">Resultado</th>
+                              <th scope="col">Info. adicional</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        {{#if dataDevicesIsEmpty }}
+                              <tr>
+                                    <td class="fw-bold text-danger" colspan="7">{{ msgTableEmpty }}</td>
+                              </tr>
+                        {{else}}
+                              {{#each dataDevices}}
+                              <tr>
+                                    <td>{{ Index }}</td>
+                                    <td><b>{{ FechaLog }}</b></td>
+                                    <td>{{ Usuario }}</td>
+                                    <td>{{ Accion }}</td>
+                                    {{#if statusResult}}
+                                          <td class="text-success fw-bold">{{ Resultado }}</td>
+                                    {{else}}
+                                          <td class="text-danger fw-bold">{{ Resultado }}</td>
+                                    {{/if}}
+                                    <td>{{{ infoAdicional }}}</td>
+                              </tr>
+                              {{/each}}
+                        {{/if}}
+                  </tbody>
+            </table>
+      </div>
+      {{!-- <button type="button" class="btn btn-secondary btn-enviar" onclick="back();">
+                  < Atrás</button> --}}
+      <div class="mt-2">
+            <button type="button" class="btn btn-secondary btn-enviar" onclick="back();">< Atrás</button>
+      </div>
+</div>
+ {{!-- {{pathBack}} --}}
+ {{!-- path='pisosSender' --}}
+ {{!-- ${path} --}}
+<script>
+      const back = () => {
+            location.href=`/`
+      }
+</script>

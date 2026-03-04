@@ -1,0 +1,46 @@
+<div id="formulario" style="font-family: 'Ubuntu', sans-serif; width:70%"
+    class="shadow rounded card text-center mx-auto my-5 ">
+    <img width="70%" class="mx-auto d-block" src="https://i.ibb.co/FxhfMzh/Logo-4.png" alt="MyCityHome">
+    <form action="/update" class="card-body" method="post">
+        <div class="mb-3 form-group">
+            <label class="mb-2" for="Seleccionar">Seleccionar</label>
+            <select id="client" name="client" style="margin:0 5% 0 5%; width:90%" class="form-control text-center">
+                {{{options}}}
+            </select>
+        </div>
+
+        <div class="btn-group-justified">
+            
+            <button class="btn btn-primary p-2 mx-3" name="sender" type="submit">Abrir Puerta</button>
+        </div>
+    </form>
+</div>
+<script>
+    let logo = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-lightbulb" viewBox="0 0 16 16"><path d="M2 6a6 6 0 1 1 10.174 4.31c-.203.196-.359.4-.453.619l-.762 1.769A.5.5 0 0 1 10.5 13a.5.5 0 0 1 0 1 .5.5 0 0 1 0 1l-.224.447a1 1 0 0 1-.894.553H6.618a1 1 0 0 1-.894-.553L5.5 15a.5.5 0 0 1 0-1 .5.5 0 0 1 0-1 .5.5 0 0 1-.46-.302l-.761-1.77a1.964 1.964 0 0 0-.453-.618A5.984 5.984 0 0 1 2 6zm6-5a5 5 0 0 0-3.479 8.592c.263.254.514.564.676.941L5.83 12h4.342l.632-1.467c.162-.377.413-.687.676-.941A5 5 0 0 0 8 1z" /></svg>';
+
+    document.getElementById("btnLight").innerHTML = logo
+
+    
+
+    //Cambio del select
+
+    const element = document.getElementById("btnNewCode");
+    element.addEventListener("click", function() {
+        document.getElementById("newCode").innerHTML = '<span id="loading" class="spinner-border text-primary" role="status"></span>';
+    })
+
+    var slcchange = document.getElementById("client");
+    slcchange.addEventListener("change", function () {
+        console.log(slcchange.value)
+    })
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    document.getElementById("client").value = urlParams.get('select');
+    
+    //Nuevo Codigo Puertas
+    if(urlParams.get("Code")!=null)
+        document.getElementById("respuesta").innerHTML = "Nuevo código: " + urlParams.get("Code")
+    
+
+</script>

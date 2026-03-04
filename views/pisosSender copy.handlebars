@@ -1,0 +1,46 @@
+<div id="formulario" style="font-family: 'Ubuntu', sans-serif; width:70%"
+    class="shadow rounded card text-center mx-auto my-5 ">
+    <img width="70%" class="mx-auto d-block" src="https://i.ibb.co/FxhfMzh/Logo-4.png" alt="MyCityHome">
+    <form action="/update" class="card-body" method="post">
+        <div class="mb-3 form-group">
+            <label class="mb-2" for="Seleccionar">Seleccionar</label>
+            <select id="client" name="client" style="margin:0 5% 0 5%; width:90%" class="form-control text-center">
+                <option>Azcas</option>
+                <option>Azcas6</option>
+                <option>Azcas7</option>
+                <option>Azcas8</option>
+                <option>Azcas9</option>
+                
+            </select>
+        </div>
+        <div class="btn-group-justified">
+            <button class="btn btn-primary p-2 mx-3" name="cmd" type="submit" value="openPortal">Abrir Portal</button>
+            <button class="btn btn-primary p-2 mx-3" name="cmd" type="submit" value="openLock">Abrir Puerta</button>
+        </div>
+        <div class="mb-3">
+            
+            <button id="btnNewCode" class="btn btn-primary mx-3 p-3" name="cmd" type="submit" value="newCode">
+                Generar nuevo codigo
+            </button>
+        </div>
+        <div>            
+            <label id="respuesta"></label>
+        </div>
+    </form>
+</div>
+<script>
+    //Cambio del select
+
+    var slcchange = document.getElementById("client");
+    slcchange.addEventListener("change", function () {
+        console.log(slcchange.value)
+    });
+
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    document.getElementById("client").value = urlParams.get('select');
+    
+    //Nuevo Codigo Puertas
+    if(urlParams.get("Code")!=null)
+    document.getElementById("respuesta").innerHTML = "Nuevo código: " + urlParams.get("Code") 
+</script>

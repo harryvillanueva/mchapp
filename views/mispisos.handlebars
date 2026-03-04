@@ -1,0 +1,138 @@
+<style>
+    #client, #idlock {
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+        padding-left: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .hide {
+        visibility: hidden;
+        display: none;
+    }
+
+    .show {
+        visibility: visible;
+    }
+
+    .card {
+        width: 380px;
+    }
+
+    .container-card {
+        display: grid;
+        justify-content: center;
+    }
+
+    .details-card-piso {
+        font-weight: normal;
+        font-size: 14px;
+    }
+
+    .color-title-card {
+        color: #1387c9
+    }
+
+    .color-subtitle-card {
+        color: #f18420
+    }
+
+    .card-header {
+        cursor: pointer;
+        border: 1px solid #b1b4b6;
+    }
+
+    .card-header:hover {
+        border: 1px solid #212529;
+    }
+
+    #formulario {
+        width:80%
+    }
+
+    div.row {
+        gap: 10px;
+    }
+
+    @media screen and (max-width: 700px) {
+        div.row {
+            display: block;
+        }
+
+        div.card {
+            width:auto;
+            margin-bottom: 15px !important;
+        }
+
+        div.container-card {
+            display: block;
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+    }
+
+    @media screen and (max-width: 1000px) {
+
+        #formulario{
+            width: 85%;
+        }
+
+        div.container-card {
+            display: block;
+            padding-right: 0px;
+            padding-left: 0px;
+        }
+    }
+
+</style>
+<div id="formulario" style="font-family: 'Ubuntu', sans-serif;"
+    class="shadow rounded card text-center mx-auto my-3 ">
+    <img width="70%" class="mx-auto d-block" src="https://i.ibb.co/FxhfMzh/Logo-4.png" alt="MyCityHome">
+    <form action="javascript:void(0);" class="card-body1" method="post">
+    </form>
+    <h2 style="margin-bottom: 5px;">Pisos</h2>
+    <div class="container container-card">
+        {{!-- <h2 style="margin-bottom: 20px;">Pisos</h2> --}}
+        {{#eachPiso pisos}}
+            {{#if showrowstart}}<div class="row">{{/if}}
+                <div class="col shadow card rounded m-2 card-header" onclick="PisoSender.goDetailsFlatNew({{id}}, '{{id_dispositivo_ref}}');">
+                    <div class="card-tittle p-2 m-2 text-center">
+                        <h4 class="color-title-card">{{ etiqueta }}</h4>
+                    </div>
+                    <div class="mb-3 text-center details-card-piso">
+                        <div>
+                            <span>{{direccion}}, Nro {{nro_edificio}}, {{nro_piso}}</span>
+                        </div>
+                        <hr />
+                        <div style="text-align: left1; font-size: 15px; margin-bottom: 5px;">
+                            <div>
+                                <label class="fw-bold color-subtitle-card">Código T:</label>
+                                {{#if existCode}}
+                                    <span>{{code}} <b>[</b>{{#if isCodeActive}}<span class="text-success fw-bold1"> Vigente </span>{{else}}<span class="text-danger fw-bold1"> Caducado </span>{{/if}} <b>]</b></span>
+                                {{else}}
+                                    <b>[</b><span class="text-danger fw-bold1"> Sin código </span> <b>]</b>
+                                {{/if}}
+                            </div>
+                            {{!-- <div>
+                                <label class="fw-bold">Keys electrónicas:</label>
+                            {{#if existCards}}
+                                {{#each lcardsData}}
+                                    <p>{{idqr}} <b>[ </b><span class="fw-bold1 text-success">{{ubicacion}}</span><b> ]</b></p>
+                                {{/each}}
+                            {{else}}
+                                <b>[</b><span class="text-danger fw-bold1"> No hay tarjetas registradas </span><b>]</b>
+                            {{/if}}
+                            </div> --}}
+                        </div>
+                        {{!-- <br /> --}}
+                        <button class="btn btn-primary py-1 mx-3" name="cmd" type="button" onclick="PisoSender.actionGestionarPisoNew(event, {{id}}, '{{id_dispositivo_ref}}');" value="openLock">Gestionar Piso</button>
+                    </div>
+                </div>
+            {{#if showrowend}}</div>{{/if}}
+        {{/eachPiso}}
+        <div class="btn-group-justified">
+            <button class="btn btn-secondary p-2 mx-3" onclick="PisoSender.goHome();" type="button" value="openLock">< Atrás</button>
+        </div>
+    </div>
+    <br />
+</div>

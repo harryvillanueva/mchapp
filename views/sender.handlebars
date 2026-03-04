@@ -1,0 +1,86 @@
+<style>
+  img.link-luz {
+            width: 90px;
+            cursor: pointer;
+            position: relative;
+      }
+
+      span.txt-link-luz {
+            font-size: 12px;
+            margin-top: 60px;
+            margin-left: -25px;
+            font-weight: normal;
+            position: absolute;
+      }
+      .show {
+            display: block;
+      }
+
+      .hide {
+            display: none;
+      }
+
+      @media screen and (max-width: 600px) {
+            /*h1.head-title {
+                  margin-top: 25px;
+                  font-size: 20px;
+            }*/
+            span.txt-link-luz {
+                  font-size: 11px;
+            }
+      }
+</style>
+<div id="formulario" style="font-family: 'Ubuntu', sans-serif; width:70%" class="shadow rounded card text-center mx-auto my-5 ">
+    <img width="70%" class="mx-auto d-block" src="https://i.ibb.co/FxhfMzh/Logo-4.png" alt="MyCityHome">
+    <form action="/update" class="card-body" action="javascript:void(0);" method="post">
+        <div class="mb-3 form-group">
+            <label class="mb-4" for="Seleccionar">Bienvendo a MyCityHome</label>
+            <h2>Oficina</h2>
+            <input id="client" name="client" style="margin:0 5% 0 5%; width:90%" class="form-control text-center" value="Oficina" readonly hidden/>
+        </div>
+        <div>
+        {{#if sonoffExist}}
+            {{#each lDevicesSonoff}}
+                  <div id="btn-sonoff-{{id}}" class="hide">
+                        <img id="link-luz-{{id}}" class="link-luz" onclick="GestionOficina.actionToggleDevice('{{stateSONOFF}}', {{id}});" src="/img/{{imgStateSONOFF}}" />
+                        <span id="txt-link-luz-{{id}}" class="txt-link-luz">[ {{nameStateSONOFF}} ]</span>
+                  </div>
+                  <div id="wait-sonoff-{{id}}" class="show">
+                        <span class="spinner-border spinner-border" role="status" aria-hidden="true"></span>
+                  </div>
+                  <br />
+            {{/each}}
+        {{/if}}
+        </div>
+        {{!-- <button id="btnLight" class="btn btn-primary mx-3 p-3" name="cmd" onclick="GestionOficina.actionToggleDevice();" type="button" value="toggleLight"></button> --}}
+        
+        <div class="btn-group-justified">
+            <button class="btn btn-secondary p-2 mx-3" onclick="GestionOficina.back();" type="button" value="openLock">< Atrás</button>
+            {{#if isPortal }}
+                  <button class="btn btn-primary p-2 mx-3" onclick="GestionOficina.actionOpenPortal({{idDevicePortal}});" type="button" value="openPortal">Abrir Portal</button>
+            {{/if}}
+            {{#if isWelock }}
+                  <button class="btn btn-primary p-2 mx-3" onclick="GestionOficina.actionOpenLock({{idDeviceLock}});" type="button" value="openLock">Abrir Puerta</button>
+            {{/if}}
+        </div>
+    </form>
+</div>
+<br/>
+<!-- Modal -->
+{{!-- <div class="modal" tabindex="-1" id="modalEspera" data-backdrop="static" data-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true"> --}}
+<div class="modal fade" id="modalEspera" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+            <div class="spinner-border" role="status">
+                  <span class="visually-hidden"></span>
+            </div>
+            &nbsp;Espere...
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://cdn.socket.io/4.4.1/socket.io.js"></script>
+<script>
+      GestionOficina.init("{{codeDevice}}", "{{urlServer}}", "{{user}}", {{idPiso}}, {{lIdsDevices}})
+</script>

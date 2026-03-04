@@ -1,0 +1,110 @@
+<style>
+      h5{
+            color: #f18420;
+            font-weight: bold;
+      }
+
+      .show {
+            display: block;
+      }
+
+      .hide {
+            display: none;
+      }
+
+      button.btn-enviar {
+            margin-top: 0;
+            margin-left: 1%;
+      }
+
+      button {
+            margin-top: 0%;
+      }
+
+      #accion, #location, #typecard, #typecode {
+            width: 100%;
+            padding-top: 0.3rem;
+            padding-bottom: 0.3rem;
+            padding-left: 0.5rem;
+            font-size: 1rem;
+      }
+
+      div.txt-left {
+            text-align: left;
+      }
+
+      span.not-exist {
+            font-size: 1.8rem;
+            font-weight: normal;
+      }
+
+      .mt-2 {
+            padding-bottom: 20px;
+      }
+
+      .sincronzarTimeStamp {
+            margin-top: 10px;
+      }
+
+      .btns-cp {
+            margin-bottom: 5px;
+      }
+      img.link-luz {
+            width: 70px;
+            cursor: pointer;
+            top: -10px;
+            position: relative;
+      }
+
+      span.txt-link-luz {
+            font-size: 14px;
+            margin-left: -20px;
+            margin-top: 35px;
+            position: absolute;
+      }
+      @media screen and (max-width: 600px) {
+            h1.head-title {
+                  margin-top: 25px;
+                  font-size: 20px;
+            }
+            span.txt-link-luz {
+                  font-size: 12px;
+            }
+      }
+</style>
+
+
+<div class="container">
+
+      <img src="https://i.ibb.co/FxhfMzh/Logo-4.png" width="50%" class="mx-auto d-block" id="icon" alt="MyCityHome" />
+
+      <div class="row d-flex justify-content-around ">
+
+            <!--       Control card       -->
+
+            <div class="col-md shadow card rounded m-2">
+
+                  <div class="card-tittle p-2 m-2 text-center">
+                        <h5>Fichar entrada/salida</h5>
+                  </div>
+
+      </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEspera" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                  <div class="modal-body text-center">
+                        <div class="spinner-border" role="status">
+                              <span class="visually-hidden"></span>
+                        </div>
+                        &nbsp;Espere...
+                  </div>
+            </div>
+      </div>
+</div>
+<script src="https://cdn.socket.io/4.4.1/socket.io.js"></script>
+<script>
+      Fichar.init("{{tokenQR}}", "{{urlServer}}", "{{user}}", "{{tokenLogin}}");
+</script>

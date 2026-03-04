@@ -1,0 +1,212 @@
+<style>
+    #client, #idlock {
+        padding-top: 0.3rem;
+        padding-bottom: 0.3rem;
+        padding-left: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .hide {
+        visibility: hidden;
+        display: none;
+    }
+
+    .show {
+        visibility: visible;
+    }
+
+    .late-warning {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ffebcc;
+        color: #333;
+        border: 1px solid #f0ad4e;
+        border-radius: 6px;
+        padding: 1rem 2rem 1rem 1rem;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: 1rem;
+    }
+    .late-warning.hide {
+        display: none;
+    }
+    .close-btn {
+        background: none;
+        border: none;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: #a97e2c;
+        margin-left: 1rem;
+    }
+
+    /* Responsive improvements for mobile */
+    @media (max-width: 600px) {
+        .late-warning {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            width: auto;
+            font-size: 0.95rem;
+            padding: 0.7rem 1rem 0.7rem 0.7rem;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .close-btn {
+            align-self: flex-end;
+            margin-left: 0;
+        }
+    }
+</style>
+
+<!-- ALERTA INFORMATIVA -->
+<div id="late-warning" class="late-warning hide">
+    <span id="late-warning-message"></span>
+    <button type="button" class="close-btn" onclick="hideLateWarning()">✕</button>
+</div>
+
+<div id="formulario" style="font-family: 'Ubuntu', sans-serif; width:70%"
+    class="shadow rounded card text-center mx-auto my-5 ">
+    <img width="70%" class="mx-auto d-block" src="https://i.ibb.co/FxhfMzh/Logo-4.png" alt="MyCityHome">
+    <form action="javascript:void(0);" class="card-body" method="post">
+        <div class="mb-3 form-group">
+            <label class="mb-3" for="Seleccionar">Piso - Vivienda</label>
+            <select onchange="PisoSender.actionLoadLocksByPiso();" id="client" name="client" style="margin:0 5% 0 5%; width:90%" class="form-select form-select-lg mb-3 text-center">
+                {{{options}}}
+            </select>
+            <span id="waitSearch" class="spinner-border spinner-border-sm hide" role="status" aria-hidden="true"></span>
+            <select id="idlock" name="idlock" style="margin:0 5% 0 5%; width:90%" class="hide form-select form-select-lg mb-3 text-center"></select>
+        </div>
+        {{{warning}}}
+        <div class="btn-group-justified">
+            <button class="btn btn-primary p-2 mx-3" name="cmd" type="button" onclick="PisoSender.actionGestionarPiso();" value="openLock">Gestionar Piso</button>
+            <button class="btn btn-primary p-2 mx-3" type="button" onclick="PisoSender.goDetailsFlat();">Ver detalle</button>
+        </div>
+    </form>
+</div>
+<div class="text-center">
+    <form method="post" action="/logout">
+        <button type="submit" id="logout" class="btn btn-danger" onclick="handleLogoutClick(event)">
+            <h5>LogOut</h5>
+        </button>
+    </form>
+</div>
+
+<script>
+// Devuelve el número de semana ISO 8601 (lunes es primer día de la semana)
+function handleLogoutClick(e) {
+    showExamReminder();
+    window._logoutForm = e.target.form;
+    e.preventDefault();
+}
+function getWeekNumber(d) {
+    d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    let dayNum = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+    let yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+    return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
+}
+
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+function showLateWarningIfNeeded() {
+    if (!isMobileDevice()) return; // Solo mostrar en móviles
+    const now = new Date();
+    const today = now.toISOString().slice(0,10);
+
+    const firstLoginKey = "firstLoginTime_" + today;
+    let firstLoginTime = localStorage.getItem(firstLoginKey);
+
+    // Si no existe, lo registramos ahora como la hora de entrada real del día
+    if (!firstLoginTime) {
+        firstLoginTime = now.toISOString();
+        localStorage.setItem(firstLoginKey, firstLoginTime);
+    }
+
+    const loginDate = new Date(firstLoginTime);
+    const hour = loginDate.getHours();
+    const minute = loginDate.getMinutes();
+
+    // Hora límite: 9:05
+    if (hour > 9 || (hour === 9 && minute > 5)) {
+        const warningKey = 'lateWarningShown_' + today;
+        const lateCountKey = 'lateWarningCount';
+        const lateWeekKey = 'lateWarningWeek';
+
+        // Calcula la semana actual (ISO)
+        const currentWeek = getWeekNumber(now);
+        const currentYear = now.getFullYear();
+        const weekId = currentYear + '-' + currentWeek;
+
+        // Si es una semana nueva, reinicia el contador
+        const storedWeekId = localStorage.getItem(lateWeekKey);
+        if (storedWeekId !== weekId) {
+            localStorage.setItem(lateCountKey, '0');
+            localStorage.setItem(lateWeekKey, weekId);
+        }
+
+        if (!localStorage.getItem(warningKey)) {
+            let lateCount = parseInt(localStorage.getItem(lateCountKey) || '0', 10);
+            lateCount += 1;
+            localStorage.setItem(lateCountKey, lateCount);
+
+            let message = '';
+            if (lateCount < 3) {
+                message = `Recuerda intentar llegar a tu hora. Este es un recordatorio amable. Si se repite en más ocasiones (3 veces en la misma semana), se notificará al departamento de RRHH. (Has llegado tarde ${lateCount} ${lateCount === 1 ? 'vez' : 'veces'} esta semana).`;
+            } else {
+                message = `Has llegado tarde en 3 o más ocasiones esta semana. Se notificará al departamento de RRHH para su seguimiento.`;
+            }
+            document.getElementById('late-warning-message').textContent = message;
+            document.getElementById('late-warning').classList.remove('hide');
+            localStorage.setItem(warningKey, 'true');
+        }
+    }
+}
+
+function hideLateWarning() {
+    document.getElementById('late-warning').classList.add('hide');
+}
+
+function showExamReminder() {
+    // Mostrar en todos los dispositivos, no solo móviles
+    if (window.sessionStorage.getItem('examReminderShown')) return;
+    let examDiv = document.getElementById('exam-warning');
+    if (!examDiv) {
+        examDiv = document.createElement('div');
+        examDiv.id = 'exam-warning';
+        examDiv.className = 'late-warning';
+        examDiv.innerHTML = `
+            <span id="exam-warning-message">Si no has hecho tu examen diario, por favor, realizalo</span>
+            <button type="button" class="close-btn" onclick="hideExamWarningAndLogout()">✕</button>
+        `;
+        document.body.appendChild(examDiv);
+    } else {
+        examDiv.classList.remove('hide');
+    }
+}
+
+function hideExamWarningAndLogout() {
+    const examDiv = document.getElementById('exam-warning');
+    if (examDiv) examDiv.classList.add('hide');
+    if (window._logoutForm) {
+        window._logoutForm.submit();
+        window._logoutForm = null;
+    }
+}
+}
+
+function hideExamWarning() {
+    const examDiv = document.getElementById('exam-warning');
+    if (examDiv) examDiv.classList.add('hide');
+}
+}
+
+// ...existing code...
+
+window.addEventListener('DOMContentLoaded', showLateWarningIfNeeded);
+</script>
