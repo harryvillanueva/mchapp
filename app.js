@@ -1013,14 +1013,7 @@ app.post('/openPortalSONOFF', async (req, response) => {
     let dataResult = { state: 1, error: undefined };
     
     try {
-        // --- PARCHE DE REDIRECCIÓN ---
-        // Si la web envía el ID 3 (incorrecto/vacío), lo forzamos al ID 2 (el que funciona)
-        if (idDeviceDB === 3) {
-            console.log(`[Corrección] Cambiando ID de dispositivo del frontend de 3 a 2.`);
-            idDeviceDB = 2; 
-        }
-        // -----------------------------
-
+        
         if (!idDeviceDB || isNaN(idDeviceDB)) throw new Error('ID de dispositivo inválido');
         
         console.log(`[Petición al ERP] Solicitando abrir puerta para ID de BD: ${idDeviceDB}`);
