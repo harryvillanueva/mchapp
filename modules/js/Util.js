@@ -53,8 +53,8 @@ const Util = () => {
             const STATUS_ACTION_FALLIDO = "Fallido"
 
             //Conexion eWeLink
-            const emailEWL =  'atic@mycityhome.es'
-            const passwordEWL = 'IoT_2021'
+            const emailEWL =  'proyectosatic@mycityhome.es'
+            const passwordEWL = 'IoT_2026'
             const regionEWL =  'eu'
 
             // Types devices

@@ -9,7 +9,7 @@ const fetch = require('node-fetch')
 
 require("dotenv").config()
 args = process.argv.slice(2)
-PORT = args[0] == "dev" ? process.env.DEVPORT : process.env.PORT
+PORT = (args[0] == "dev" ? process.env.DEVPORT : process.env.PORT) || 3017;
 
 // const { Client: ClientDB } = require('pg')
 
@@ -41,11 +41,9 @@ const { Constants, RouteApp, getDataGitHub,
     formatDateSQLToScreen,
     getLabelTypeCard, processDataLog, getCardByTypeKey } = require("./modules/js/Util")()
 
-try {
-    Logs.init() // quitar solo para login de usuario y pisos
-} catch (err) {
-    console.log('error al iniciar google-spreadsheet');
-}
+Logs.init().catch(err => {
+    console.error('Error asíncrono al iniciar google-spreadsheet. La app seguirá funcionando.');
+});
 
 // ======= SOCKETS ON SERVIDOR [TEMPORAL SIN USO] =========
 // Inicializar socket, indicandole cual esta haciendo la conexión al TCP
@@ -83,7 +81,7 @@ try {
 var users;
 let pisos = [];
 
-app.use(express.static('public'));
+app.use(express.static(require('path').join(__dirname, 'public')));
 
 // app.use(session({
 //     secret: "This is a secret",
@@ -112,6 +110,7 @@ app.use(bodyParser.json());
 app.engine("handlebars", exphbs.engine())
 //app.engine("handlebars", hbs.engine)
 app.set("view engine", "handlebars")
+app.set("views", require('path').join(__dirname, 'views'));
 
 // app.engine("handlebars", exphbs.engine)
 
@@ -1009,21 +1008,40 @@ app.post('/update', auth, async (req, res) => { // Envia la request
 })
 
 app.post('/openPortalSONOFF', async (req, response) => {
-    const idDevice = parseInt(req.body.idDevice?.toString()) || 3
-    let endPointApi = `https://mch-api.vercel.app/api/public/devices/${idDevice}/sonoff/status`
-    // ${ApiConfigurationInstance.pathApi}/api/public/devices/${idDevice}/sonoff/status
-
-    let dataResult = { state: 1, error: undefined }
+    // Recibimos el ID que manda el botón de la web
+    let idDeviceDB = parseInt(req.body.idDevice?.toString());
+    let dataResult = { state: 1, error: undefined };
+    
     try {
-        if (idDevice <= 0 || idDevice === NaN) throw new Error('Error')
-        await EWeLinkServiceInstance.setStatusByIdDevice(idDevice)
+        // --- PARCHE DE REDIRECCIÓN ---
+        // Si la web envía el ID 3 (incorrecto/vacío), lo forzamos al ID 2 (el que funciona)
+        if (idDeviceDB === 3) {
+            console.log(`[Corrección] Cambiando ID de dispositivo del frontend de 3 a 2.`);
+            idDeviceDB = 2; 
+        }
+        // -----------------------------
+
+        if (!idDeviceDB || isNaN(idDeviceDB)) throw new Error('ID de dispositivo inválido');
+        
+        console.log(`[Petición al ERP] Solicitando abrir puerta para ID de BD: ${idDeviceDB}`);
+
+        // Le pedimos al ERP que abra la puerta
+        let resERP = await EWeLinkServiceInstance.setStatusByIdDevice(idDeviceDB);
+
+        // Verificamos si el ERP nos devolvió un error
+        if (resERP && resERP.data && resERP.data.error !== 0 && resERP.data.error !== undefined) {
+            throw new Error(`El ERP devolvió error: ${resERP.data.msg}`);
+        }
+        
+        console.log(`¡Éxito! El ERP abrió la puerta correctamente.`);
+
     } catch (err) {
-        console.log(err)
-        dataResult = { state: 0, error: 'Error, intentelo mas tarde!!' }
+        console.error("Error al comunicarse con el ERP:", err.message);
+        dataResult = { state: 0, error: 'Error al abrir la puerta. Inténtelo más tarde.' };
     }
 
-    response.json(dataResult)
-})
+    response.json(dataResult);
+});
 
 app.get('/getstatussonoff', auth, async (req, res) => { // Envia la request
     let idDevicesIn = (req.query.idDevices || 0).toString()

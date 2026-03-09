@@ -178,7 +178,7 @@ const GestionPiso = {
                         "Content-Type": "application/json",
                   },
                   body: JSON.stringify(dataJSON)
-            }).then((res) => res.json).then((res) => {
+            }).then((res) => res.json()).then((res) => {
                   console.log(res)
             }).finally(() => {
                   setTimeout(async () => {
