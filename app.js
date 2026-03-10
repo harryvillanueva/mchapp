@@ -981,11 +981,18 @@ app.post("/savesugerencia", nAuth, async (req, res) => {
 })
 
 //Encender luz - Generar nuevo codigo
-app.post('/update', auth, async (req, res) => { // Envia la request
+app.post('/update', auth, async (req, res) => { 
     if (req.body.cmd == 'toggleLight') {
         let idDeviceIn = parseInt(req.body.idDevice) || 0
         let idPisoIn = parseInt(req.body.idPiso) || 0
         let statusSONOFF = { error: 403, msg: "device not exist!!" }
+        
+        // --- PARCHE DE REDIRECCIÓN (Si aplica a la luz) ---
+        // Si tienes problemas de IDs con la luz, ponlo aquí. 
+        // Ejemplo: si el ID de la luz en BD ahora es 5 pero la web manda 4:
+        // if (idDeviceIn === 4) { idDeviceIn = 5; }
+        // --------------------------------------------------
+
         let pisoData = pisos.filter(el => el.id === idPisoIn)[0] ||
         {
             id: 0,
@@ -994,13 +1001,24 @@ app.post('/update', auth, async (req, res) => { // Envia la request
             dispositivos: []
         }
         let deviceSonoff = pisoData.dispositivos.filter(el => el.id === idDeviceIn)[0]
+        
         if (!deviceSonoff) {
+            console.log(`[Luz] No se encontró el dispositivo ${idDeviceIn} en el piso ${idPisoIn}`);
             res.json(statusSONOFF)
             return
         }
+        
+        console.log(`[Luz] Solicitando cambiar estado de la luz. ID BD: ${deviceSonoff.id}`);
         let respWeLock = await toggleDeviceApi(deviceSonoff.id)
+        
         if (respWeLock) {
-            if (respWeLock.data.error === 0) respWeLock = { ...respWeLock.data, error: undefined }
+            if (respWeLock.data && respWeLock.data.error === 0) {
+                // Formateamos la respuesta para que el frontend la entienda
+                respWeLock = { error: 0, data: { ...respWeLock.data.data } }
+                console.log(`[Luz] ¡Estado cambiado con éxito!`);
+            } else {
+                respWeLock = { error: respWeLock.data ? respWeLock.data.error : 500, msg: "Error del ERP" }
+            }
         }
         statusSONOFF = respWeLock || statusSONOFF
         res.json(statusSONOFF)
